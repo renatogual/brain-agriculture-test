@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
     Button,
     Form,
@@ -8,9 +8,11 @@ import {
     Row,
     Col,
 } from 'antd';
-import type { FormProps } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { Farm } from '../../types';
+import { useFarm } from '../../contexts/FarmContext';
+import { useEffect } from 'react';
 
 const cropsOptions = [
     {
@@ -36,17 +38,32 @@ const cropsOptions = [
 ]
 
 const FarmRegister = () => {
-    const handleSubmit = (fieldsValue: Farm) => {
-        console.log('fields', fieldsValue)
-    };
+    const navigate = useNavigate();
+    const [form] = Form.useForm();
+    const { id } = useParams()
+    const { farms, addFarm, editFarm } = useFarm()
+
+    function handleSubmit(fieldsValue: Farm) {
+        const action = id ? editFarm : addFarm
+        const updatedValues = id ? { ...fieldsValue, id } : fieldsValue
+        action(updatedValues)
+        navigate('/farms')
+    }
+
+    useEffect(() => {
+        if (!id) return
+
+        const farmFounded = farms.find(farm => farm.id === id)
+        form.setFieldsValue({ ...farmFounded, id })
+    }, [id])
 
     return (
         <Form
+            form={form}
             variant='outlined'
             layout='vertical'
             size='large'
             onFinish={handleSubmit}
-
         >
             <Row gutter={24}>
                 <Col span={12}>

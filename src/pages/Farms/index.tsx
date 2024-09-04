@@ -1,55 +1,58 @@
-import { Link } from "react-router-dom";
-import { Button, Flex, Space, Table, TableProps } from "antd"
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Flex, Modal, Space, Table, TableProps } from "antd"
 import { Typography } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, ExclamationCircleFilled } from '@ant-design/icons';
 
-import { DataType } from "./types";
+import { useFarm } from "../../contexts/FarmContext";
+import { Farm } from "../../types";
 
 const { Title } = Typography;
-
-const columns: TableProps<DataType>['columns'] = [
-    {
-        title: 'Produtor',
-        dataIndex: 'farmer',
-        key: 'farmer',
-        render: (text) => <span>{text}</span>,
-    },
-    {
-        title: 'Fazenda',
-        dataIndex: 'farm',
-        key: 'farm',
-    },
-    {
-        title: 'Ação',
-        key: 'action',
-        render: () => (
-            <Space size="middle">
-                <Button icon={<EditOutlined />} />
-                <Button icon={<DeleteOutlined />} />
-            </Space>
-        ),
-    },
-];
-
-const data: DataType[] = [
-    {
-        key: '1',
-        farm: 'John Brown',
-        farmer: 'Fazenda 1',
-    },
-    {
-        key: '2',
-        farm: 'John Brown',
-        farmer: 'Fazenda 2',
-    },
-    {
-        key: '3',
-        farm: 'John Brown',
-        farmer: 'Fazenda 3',
-    },
-];
+const { confirm } = Modal;
 
 const Farms = () => {
+    const navigate = useNavigate();
+    const { farms, deleteFarm } = useFarm()
+
+    const columns: TableProps<Farm>['columns'] = [
+        {
+            title: 'Produtor',
+            dataIndex: 'ownerName',
+            key: 'ownerName',
+        },
+        {
+            title: 'Fazenda',
+            dataIndex: 'farmName',
+            key: 'farmName',
+        },
+        {
+            title: 'Ações',
+            key: 'action',
+            render: (_, data) => (
+                <Space size="middle">
+                    <Button icon={<EditOutlined />} onClick={() => handleEditFarm(data.id)} />
+                    <Button icon={<DeleteOutlined />} onClick={() => handleDeleteFarm(data.id)} />
+                </Space>
+            ),
+        },
+    ];
+
+    function handleEditFarm(id: string) {
+        navigate(`/farms/register/${id}`)
+    }
+
+    function handleDeleteFarm(id: string) {
+        confirm({
+            title: 'Você tem certeza que deseja deletar este item?',
+            icon: <ExclamationCircleFilled />,
+            okType: 'danger',
+            okText: 'Sim',
+            cancelText: 'Cancelar',
+            onOk() {
+                deleteFarm(id);
+            },
+        });
+    };
+
     return (
         <Flex vertical>
             <Flex style={{ gap: 8 }}>
@@ -58,7 +61,7 @@ const Farms = () => {
                     <Button icon={<PlusOutlined />} />
                 </Link>
             </Flex>
-            <Table columns={columns} dataSource={data} pagination={false} />
+            <Table columns={columns} dataSource={farms} pagination={false} />
         </Flex>
     )
 }

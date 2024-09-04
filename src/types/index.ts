@@ -10,3 +10,10 @@ export interface Farm {
     vegetationArea: number;
     crops: string[];
 }
+
+export interface FarmContextProps {
+    farms: Farm[];
+    addFarm: (farm: Farm) => void;
+    editFarm: (farm: Farm) => void;
+    deleteFarm: (id: string) => void;
+}

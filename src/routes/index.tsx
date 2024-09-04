@@ -4,33 +4,39 @@ import {
     PieChartOutlined,
     UnorderedListOutlined,
 } from '@ant-design/icons';
+
+import Dashboard from '../pages/Dashboard';
 import Farms from '../pages/Farms';
 import FarmRegister from '../pages/FarmRegister';
 
 const { Sider, Content } = Layout;
 
-const Home = () => <h2>Home Page</h2>;
+const menuItems = [
+    {
+        key: '1',
+        icon: <PieChartOutlined />,
+        label: <Link to="/">Dashboard</Link>,
+    },
+    {
+        key: '2',
+        icon: <UnorderedListOutlined />,
+        label: <Link to="/farms">Fazendas</Link>,
+    },
+];
 
 const AppRoutes = () => (
     <Router>
         <Layout style={{ minHeight: '100vh' }}>
             <Sider>
-                <Menu theme="dark" mode="inline">
-                    <Menu.Item key="1" icon={<PieChartOutlined />}>
-                        <Link to="/">Dashboard</Link>
-                    </Menu.Item>
-                    <Menu.Item key="2" icon={<UnorderedListOutlined />}>
-                        <Link to="/farms">Fazendas</Link>
-                    </Menu.Item>
-                </Menu>
+                <Menu theme="dark" mode="vertical" items={menuItems} />
             </Sider>
             <Layout>
                 <Content style={{ margin: '16px' }}>
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Dashboard />} />
                         <Route path="/farms" element={<Outlet />}>
                             <Route index element={<Farms />} />
-                            <Route path="register" element={<FarmRegister />} />
+                            <Route path="register/:id?" element={<FarmRegister />} />
                         </Route>
                     </Routes>
                 </Content>
