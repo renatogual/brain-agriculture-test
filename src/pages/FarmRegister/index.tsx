@@ -91,19 +91,7 @@ const FarmRegister = () => {
         navigate('/farms')
     }
 
-    function validateCPFOrCNPJ(_: any, value: string) {
-        const cleanedValue = value.replace(/\D/g, '');
-        if (!value) {
-            return Promise.reject(new Error('Campo obrigatório'));
-        } else if (cleanedValue.length <= 11 && !isCpfValid(value)) {
-            return Promise.reject(new Error('CPF inválido'));
-        } else if (cleanedValue.length > 11 && !isCnpjValid(value)) {
-            return Promise.reject(new Error('CNPJ inválido'));
-        }
-        return Promise.resolve();
-    };
-
-    const handleCpfOrCnpjChange = (event: ChangeEvent<HTMLInputElement>) => {
+    function handleCpfOrCnpjChange(event: ChangeEvent<HTMLInputElement>) {
         let value = event.target.value.replace(/\D/g, '');
 
         if (value.length > 14) {
@@ -125,6 +113,30 @@ const FarmRegister = () => {
 
         setInputValue(value);
         form.setFieldsValue({ cpfCnpj: value });
+    };
+
+    function validateCPFOrCNPJ(_: any, value: string) {
+        const cleanedValue = value.replace(/\D/g, '');
+        if (!value) {
+            return Promise.reject(new Error(requiredMessage));
+        } else if (cleanedValue.length <= 11 && !isCpfValid(value)) {
+            return Promise.reject(new Error('CPF inválido'));
+        } else if (cleanedValue.length > 11 && !isCnpjValid(value)) {
+            return Promise.reject(new Error('CNPJ inválido'));
+        }
+        return Promise.resolve();
+    };
+
+    function validateAreas(_: any, value: string) {
+        const { totalArea, arableArea, vegetationArea } = form.getFieldsValue(['totalArea', 'arableArea', 'vegetationArea'])
+        const isTotalValid = arableArea + vegetationArea <= totalArea
+
+        if (!value) {
+            return Promise.reject(new Error(requiredMessage));
+        } else if (!isTotalValid) {
+            return Promise.reject(new Error('Valor não pode ser maior que a área total'));
+        }
+        return Promise.resolve();
     };
 
     useEffect(() => {
@@ -174,7 +186,7 @@ const FarmRegister = () => {
                         <Form.Item
                             label="Área agricultável em hectares"
                             name="arableArea"
-                            rules={[{ required: true, message: requiredMessage }]}
+                            rules={[{ validator: validateAreas }]}
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
@@ -190,7 +202,7 @@ const FarmRegister = () => {
                         <Form.Item
                             label="Área de vegetação em hectares"
                             name="vegetationArea"
-                            rules={[{ required: true, message: requiredMessage }]}
+                            rules={[{ validator: validateAreas }]}
                         >
                             <InputNumber style={{ width: '100%' }} />
                         </Form.Item>
