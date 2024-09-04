@@ -2,36 +2,23 @@ import { Pie } from '@ant-design/plots';
 
 interface PieChartProps {
     data: {
-        state: string,
+        key: string,
         value: number
-    }
+    }[]
 }
 
-const PieChart = () => {
+const PieChart = ({ data }: PieChartProps) => {
     const config = {
-        data: [
-            { state: 'MG', value: 27 },
-            { state: 'GO', value: 25 },
-            { state: 'MG', value: 18 },
-            { state: 'SP', value: 15 },
-            { state: 'RJ', value: 10 },
-            { state: 'PR', value: 5 },
-        ],
+        data,
         angleField: 'value',
-        colorField: 'state',
+        colorField: 'key',
         label: {
-            text: 'state',
+            text: 'key',
             style: {
                 fontWeight: 'bold',
             },
         },
-        legend: {
-            color: {
-                title: false,
-                position: 'right',
-                rowPadding: 5,
-            },
-        },
+        legend: false,
     };
     return <Pie {...config} />
 }

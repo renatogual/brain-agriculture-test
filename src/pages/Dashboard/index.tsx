@@ -10,51 +10,58 @@ const Dashboard = () => {
     const totalFarms = farms.length
     const totalArea = farms.reduce((sum, farm) => sum + farm.totalArea, 0);
 
-    const statesData = farms.reduce((acc, farm) => {
+    const statesAmount = farms.reduce((acc, farm) => {
         acc[farm.state] = (acc[farm.state] || 0) + 1;
         return acc;
     }, {} as Record<string, number>);
 
-    const cropsData = farms.reduce((acc, farm) => {
+    const statesData = Object.entries(statesAmount).map(([key, value]) => ({ key, value }));
+
+    const cropsAmount = farms.reduce((acc, farm) => {
         farm.crops.forEach(crop => {
             acc[crop] = (acc[crop] || 0) + 1;
         });
         return acc;
     }, {} as Record<string, number>);
 
-    const landUseData = farms.reduce((acc, farm) => {
+    const cropsData = Object.entries(cropsAmount).map(([key, value]) => ({ key, value }));
+
+    const landUseAmount = farms.reduce((acc, farm) => {
         acc['Agricultável'] = (acc['Agricultável'] || 0) + farm.arableArea;
         acc['Vegetação'] = (acc['Vegetação'] || 0) + farm.vegetationArea;
         return acc;
     }, {} as Record<string, number>);
 
-
-
+    const landUseData = Object.entries(landUseAmount).map(([key, value]) => ({ key, value }));
 
     return (
         <Space direction="vertical" size={24}>
             <Row gutter={24}>
                 <Col span={12}>
-                    <Card title="Total de fazendas por estado">
-                        <PieChart />
-                    </Card>
+                    <Space direction="vertical" size={24}>
+                        <Card title="Total de fazendas" total={totalFarms} />
+                    </Space>
                 </Col>
                 <Col span={12}>
                     <Space direction="vertical" size={24}>
-                        <Card title="Total de fazendas em quantidade" total={totalFarms} />
-                        <Card title="Total de fazendas em hectares (área total)" total={totalArea} />
+                        <Card title="Área total de fazendas em hectares" total={totalArea} />
                     </Space>
                 </Col>
             </Row>
             <Row gutter={24}>
-                <Col span={12}>
-                    <Card title="Total de fazendas por cultura">
-                        <PieChart />
+                <Col xs={12} lg={8}>
+                    <Card title="Total de fazendas por estado">
+                        <PieChart data={statesData} />
                     </Card>
                 </Col>
-                <Col span={12}>
+                <Col xs={12} lg={8}>
+                    <Card title="Total de fazendas por cultura plantada">
+                        <PieChart data={cropsData} />
+                    </Card>
+                </Col>
+                <Col xs={12} lg={8}>
                     <Card title="Total de fazendas por uso de solo">
-                        <PieChart />
+                        <PieChart data={landUseData} />
                     </Card>
                 </Col>
             </Row>
