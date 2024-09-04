@@ -1,8 +1,7 @@
-import { Col, Flex, Row, Space } from "antd"
+import { Col, Empty, Flex, Row, Space } from "antd"
 import { useFarm } from "../../contexts/FarmContext"
 import Card from "../../components/Card"
 import PieChart from "../../components/PieChart"
-
 
 const Dashboard = () => {
     const { farms } = useFarm()
@@ -35,37 +34,44 @@ const Dashboard = () => {
     const landUseData = Object.entries(landUseAmount).map(([key, value]) => ({ key, value }));
 
     return (
-        <Space direction="vertical" size={24}>
-            <Row gutter={24}>
-                <Col span={12}>
-                    <Space direction="vertical" size={24}>
-                        <Card title="Total de fazendas" total={totalFarms} />
-                    </Space>
-                </Col>
-                <Col span={12}>
-                    <Space direction="vertical" size={24}>
-                        <Card title="Área total de fazendas em hectares" total={totalArea} />
-                    </Space>
-                </Col>
-            </Row>
-            <Row gutter={24}>
-                <Col xs={12} lg={8}>
-                    <Card title="Total de fazendas por estado">
-                        <PieChart data={statesData} />
-                    </Card>
-                </Col>
-                <Col xs={12} lg={8}>
-                    <Card title="Total de fazendas por cultura plantada">
-                        <PieChart data={cropsData} />
-                    </Card>
-                </Col>
-                <Col xs={12} lg={8}>
-                    <Card title="Total de fazendas por uso de solo">
-                        <PieChart data={landUseData} />
-                    </Card>
-                </Col>
-            </Row>
-        </Space>
+        farms?.length > 0 ? (
+            <Space direction="vertical" size={24}>
+                <Row gutter={24}>
+                    <Col span={12}>
+                        <Space direction="vertical" size={24}>
+                            <Card title="Total de fazendas" total={totalFarms} />
+                        </Space>
+                    </Col>
+                    <Col span={12}>
+                        <Space direction="vertical" size={24}>
+                            <Card title="Área total de fazendas em hectares" total={totalArea} />
+                        </Space>
+                    </Col>
+                </Row>
+                <Row gutter={24}>
+                    <Col xs={12} lg={8}>
+                        <Card title="Total de fazendas por estado">
+                            <PieChart data={statesData} />
+                        </Card>
+                    </Col>
+                    <Col xs={12} lg={8}>
+                        <Card title="Total de fazendas por cultura plantada">
+                            <PieChart data={cropsData} />
+                        </Card>
+                    </Col>
+                    <Col xs={12} lg={8}>
+                        <Card title="Total de fazendas por uso de solo">
+                            <PieChart data={landUseData} />
+                        </Card>
+                    </Col>
+                </Row>
+            </Space>
+        ) : (
+            <Flex align="center" justify="center" style={{ height: '100%' }}>
+                <Empty />
+            </Flex>
+        )
+
     )
 }
 
