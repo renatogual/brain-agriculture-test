@@ -26,12 +26,12 @@ const menuItems = [
 
 const AppRoutes = () => (
     <Router>
-        <Layout style={{ minHeight: '100vh' }}>
+        <Layout>
             <Sider>
                 <Menu theme="dark" mode="vertical" items={menuItems} />
             </Sider>
             <Layout>
-                <Content style={{ margin: '16px' }}>
+                <Content>
                     <Routes>
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/farms" element={<Outlet />}>

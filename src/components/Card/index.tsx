@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card = ({ title, total, children }: CardProps) => (
     <AntdCard>
-        <Title level={4} style={{ fontWeight: 700 }}  >{title}</Title>
+        <Title level={3} style={{ fontWeight: 700 }}  >{title}</Title>
         {total && <Text style={{ fontSize: 24 }}>{total}</Text>}
         {children}
     </AntdCard>
