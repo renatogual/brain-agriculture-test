@@ -1,20 +1,38 @@
-## Project available here: https://brain-agriculture-test.vercel.app/
+## Brain Agriculture Test
 
-## Available Scripts
+This application is designed for managing rural producers, providing functionalities such as registration, editing, and deletion of producer records, and analysis through graphs on the dashboard.
 
-In the project directory, you can run:
+#### You can see the application running [here](https://brain-agriculture-test.vercel.app/).
 
-### `yarn start`
+## Technologies Used
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Ant Design](https://ant.design/)
+- [Ant Design Charts](https://charts.ant.design/)
+- [Context API](https://pt-br.reactjs.org/docs/context.html)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Testing
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+yarn test or npm run test
+```
+
+## Getting Started
+
+Install the dependencies:
+
+```bash
+yarn or npm install
+```
+
+And run the development server:
+
+```bash
+yarn start or npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application running.
 
 
